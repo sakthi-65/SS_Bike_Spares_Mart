@@ -1,0 +1,669 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Order Confirmed & Dispatch Tracking | BIKE SPARES MART</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800;900&family=Space+Grotesk:wght@500;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/styles.css">
+  <style>
+    /* 4K Dedicated Order Success & Invoice Specific Styles */
+    .success-page-body {
+      background: radial-gradient(circle at 50% 0%, #15222e 0%, #080c10 70%);
+      min-height: 100vh;
+      color: #f1f5f9;
+      font-family: 'Outfit', sans-serif;
+    }
+    .invoice-container {
+      max-width: 1050px;
+      margin: 40px auto;
+      padding: 0 24px 80px;
+    }
+    .success-hero-card {
+      background: linear-gradient(135deg, rgba(20, 29, 39, 0.95), rgba(12, 17, 24, 0.98));
+      border: 1px solid rgba(0, 229, 255, 0.3);
+      box-shadow: 0 20px 50px rgba(0, 0, 0, 0.6), 0 0 40px rgba(0, 229, 255, 0.1);
+      border-radius: 24px;
+      padding: 48px;
+      text-align: center;
+      position: relative;
+      overflow: hidden;
+      margin-bottom: 35px;
+    }
+    .success-hero-card::before {
+      content: '';
+      position: absolute;
+      top: -100px;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 300px;
+      height: 300px;
+      background: radial-gradient(circle, rgba(16, 185, 129, 0.25) 0%, transparent 70%);
+      pointer-events: none;
+    }
+    .check-animation {
+      width: 90px;
+      height: 90px;
+      background: linear-gradient(135deg, #10b981, #059669);
+      border-radius: 50%;
+      display: inline-grid;
+      place-items: center;
+      font-size: 46px;
+      color: #fff;
+      box-shadow: 0 0 35px rgba(16, 185, 129, 0.5);
+      margin-bottom: 24px;
+      animation: popCheck 0.6s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    }
+    @keyframes popCheck {
+      0% { transform: scale(0) rotate(-45deg); opacity: 0; }
+      100% { transform: scale(1) rotate(0deg); opacity: 1; }
+    }
+    .hero-tags-row {
+      display: flex;
+      justify-content: center;
+      gap: 12px;
+      flex-wrap: wrap;
+      margin: 20px 0 28px;
+    }
+    .hero-tag {
+      background: rgba(255, 255, 255, 0.05);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      padding: 8px 18px;
+      border-radius: 30px;
+      font-size: 14px;
+      font-weight: 600;
+    }
+    .hero-tag.cyan { border-color: #00e5ff; color: #00e5ff; background: rgba(0, 229, 255, 0.1); }
+    .hero-tag.orange { border-color: #ff5500; color: #ff5500; background: rgba(255, 85, 0, 0.1); }
+
+    /* Live Tracking Progress Bar */
+    .tracking-card {
+      background: #111822;
+      border: 1px solid #1e293b;
+      border-radius: 20px;
+      padding: 36px;
+      margin-bottom: 35px;
+    }
+    .tracking-steps {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      position: relative;
+      margin-top: 35px;
+    }
+    .tracking-steps::before {
+      content: '';
+      position: absolute;
+      top: 22px;
+      left: 10%;
+      right: 10%;
+      height: 4px;
+      background: #1e293b;
+      z-index: 1;
+    }
+    .tracking-progress-fill {
+      position: absolute;
+      top: 22px;
+      left: 10%;
+      width: 40%;
+      height: 4px;
+      background: linear-gradient(90deg, #10b981, #00e5ff);
+      z-index: 2;
+    }
+    .step-node {
+      position: relative;
+      z-index: 3;
+      text-align: center;
+    }
+    .node-circle {
+      width: 46px;
+      height: 46px;
+      border-radius: 50%;
+      background: #0d131b;
+      border: 3px solid #1e293b;
+      color: #64748b;
+      display: grid;
+      place-items: center;
+      margin: 0 auto 12px;
+      font-weight: 800;
+      font-size: 18px;
+    }
+    .step-node.done .node-circle {
+      background: #10b981;
+      border-color: #10b981;
+      color: #fff;
+      box-shadow: 0 0 15px rgba(16, 185, 129, 0.5);
+    }
+    .step-node.active .node-circle {
+      background: #00e5ff;
+      border-color: #00e5ff;
+      color: #0d131b;
+      box-shadow: 0 0 20px rgba(0, 229, 255, 0.7);
+      animation: pulseNode 1.5s infinite;
+    }
+    @keyframes pulseNode {
+      0%, 100% { transform: scale(1); }
+      50% { transform: scale(1.1); }
+    }
+    .step-title { font-weight: 700; font-size: 15px; margin-bottom: 4px; }
+    .step-desc { font-size: 12px; color: #94a3b8; }
+
+    /* GPS Route Simulation Graphic */
+    .gps-map-card {
+      background: #0d141e;
+      border: 1px solid #1e293b;
+      border-radius: 16px;
+      padding: 24px;
+      margin-top: 30px;
+      display: flex;
+      align-items: center;
+      gap: 20px;
+    }
+    .gps-icon {
+      font-size: 38px;
+      background: rgba(0, 229, 255, 0.1);
+      padding: 16px;
+      border-radius: 14px;
+      border: 1px solid rgba(0, 229, 255, 0.3);
+    }
+    .gps-info h4 { margin: 0 0 6px 0; color: #00e5ff; font-size: 17px; }
+    .gps-info p { margin: 0; color: #94a3b8; font-size: 14px; line-height: 1.5; }
+
+    /* Official Printable Tax Invoice */
+    .printable-invoice {
+      background: #fff;
+      color: #0f172a;
+      border-radius: 20px;
+      padding: 48px;
+      box-shadow: 0 25px 60px rgba(0, 0, 0, 0.7);
+    }
+    .invoice-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      border-bottom: 2px solid #e2e8f0;
+      padding-bottom: 28px;
+      margin-bottom: 28px;
+    }
+    .invoice-brand h2 {
+      margin: 0;
+      font-size: 28px;
+      font-weight: 900;
+      color: #0f172a;
+      letter-spacing: -0.5px;
+    }
+    .invoice-brand span { color: #ff5500; }
+    .invoice-brand p { margin: 6px 0 0; color: #64748b; font-size: 13px; }
+    .invoice-meta { text-align: right; }
+    .invoice-badge-title {
+      font-family: 'Space Grotesk', sans-serif;
+      font-size: 22px;
+      font-weight: 700;
+      color: #0284c7;
+      margin-bottom: 6px;
+    }
+    .invoice-meta-text { color: #475569; font-size: 13px; line-height: 1.6; }
+
+    .invoice-party-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 30px;
+      background: #f8fafc;
+      padding: 22px;
+      border-radius: 12px;
+      margin-bottom: 30px;
+      border: 1px solid #e2e8f0;
+    }
+    .party-col h4 {
+      margin: 0 0 8px 0;
+      font-size: 14px;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      color: #64748b;
+    }
+    .party-col p { margin: 4px 0; font-size: 14px; color: #1e293b; line-height: 1.5; }
+
+    .invoice-table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-bottom: 30px;
+    }
+    .invoice-table th {
+      background: #0f172a;
+      color: #fff;
+      text-align: left;
+      padding: 12px 14px;
+      font-size: 13px;
+      font-weight: 600;
+      letter-spacing: 0.5px;
+    }
+    .invoice-table td {
+      padding: 14px;
+      border-bottom: 1px solid #e2e8f0;
+      font-size: 14px;
+      color: #334155;
+    }
+    .invoice-table tr:last-child td { border-bottom: 2px solid #0f172a; }
+
+    .invoice-financials {
+      display: flex;
+      justify-content: flex-end;
+      margin-bottom: 35px;
+    }
+    .financials-card {
+      width: 360px;
+      background: #f8fafc;
+      border: 1px solid #e2e8f0;
+      border-radius: 12px;
+      padding: 20px;
+    }
+    .fin-row {
+      display: flex;
+      justify-content: space-between;
+      padding: 7px 0;
+      font-size: 14px;
+      color: #475569;
+    }
+    .fin-row.bold-total {
+      border-top: 2px solid #0f172a;
+      margin-top: 8px;
+      padding-top: 12px;
+      font-size: 18px;
+      font-weight: 800;
+      color: #0f172a;
+    }
+
+    .invoice-footer {
+      border-top: 1px dashed #cbd5e1;
+      padding-top: 20px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-size: 12px;
+      color: #64748b;
+    }
+
+    /* Print Controls */
+    .action-controls-bar {
+      display: flex;
+      justify-content: center;
+      gap: 16px;
+      margin-top: 35px;
+      flex-wrap: wrap;
+    }
+    .btn-action-primary {
+      background: #ff5500;
+      color: #fff;
+      font-weight: 700;
+      padding: 14px 28px;
+      border-radius: 12px;
+      border: 0;
+      cursor: pointer;
+      font-size: 16px;
+      box-shadow: 0 8px 25px rgba(255, 85, 0, 0.4);
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      text-decoration: none;
+      transition: 0.2s;
+    }
+    .btn-action-primary:hover {
+      background: #e04b00;
+      transform: translateY(-2px);
+    }
+    .btn-action-secondary {
+      background: #1e293b;
+      color: #fff;
+      font-weight: 700;
+      padding: 14px 28px;
+      border-radius: 12px;
+      border: 1px solid #334155;
+      cursor: pointer;
+      font-size: 16px;
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      text-decoration: none;
+      transition: 0.2s;
+    }
+    .btn-action-secondary:hover {
+      background: #334155;
+      border-color: #00e5ff;
+    }
+
+    @media print {
+      body { background: #fff!important; color: #000!important; }
+      header, .success-hero-card, .tracking-card, .action-controls-bar, #your-wise-widget { display: none!important; }
+      .invoice-container { margin: 0; padding: 0; max-width: 100%; }
+      .printable-invoice { box-shadow: none; border: none; padding: 0; }
+    }
+    @media (max-width: 768px) {
+      .tracking-steps { grid-template-columns: 1fr; gap: 20px; }
+      .tracking-steps::before, .tracking-progress-fill { display: none; }
+      .invoice-party-grid { grid-template-columns: 1fr; }
+      .financials-card { width: 100%; }
+      .invoice-header { flex-direction: column; gap: 16px; }
+      .invoice-meta { text-align: left; }
+    }
+  </style>
+</head>
+<body class="success-page-body">
+
+  <!-- Top Sticky Navigation -->
+  <header style="background: rgba(10, 14, 20, 0.95); backdrop-filter: blur(12px); border-bottom: 1px solid #1e293b; padding: 16px 6%; display: flex; justify-content: space-between; align-items: center;">
+    <div style="display: flex; align-items: center; gap: 12px;">
+      <span style="font-size: 28px;">🏍️</span>
+      <div>
+        <b style="font-size: 20px; font-weight: 900; letter-spacing: -0.5px;">BIKE SPARES <span style="color:#ff5500;">MART</span></b>
+        <div style="font-size: 11px; color: #00e5ff; letter-spacing: 1.5px; font-weight: 700;">4K OFFICIAL DISPATCH PORTAL</div>
+      </div>
+    </div>
+    <div style="display: flex; gap: 12px;">
+      <a href="index.html" class="btn-action-secondary" style="padding: 10px 18px; font-size: 14px;">← Back to Spares Store</a>
+    </div>
+  </header>
+
+  <main class="invoice-container">
+
+    <!-- Hero Celebration Card -->
+    <div class="success-hero-card">
+      <div class="check-animation">✓</div>
+      <h1 style="font-size: clamp(28px, 4vw, 42px); margin: 0 0 10px 0; font-weight: 800;">Order Placed Successfully!</h1>
+      <p style="font-size: 17px; color: #94a3b8; max-width: 650px; margin: 0 auto; line-height: 1.6;">
+        Thank you for trusting <b>Bike Spares Mart</b>. Your motorcycle performance parts have been booked and are currently routed to our 4K testing and packing depot.
+      </p>
+
+      <div class="hero-tags-row">
+        <div class="hero-tag cyan" id="dispOrderId">Order ID: BSM-Loading</div>
+        <div class="hero-tag orange" id="dispPayStatus">Payment: Verified</div>
+        <div class="hero-tag" id="dispEstDelivery">Est Delivery: 3 Days</div>
+        <div class="hero-tag" id="dispCarrier">Courier: BlueDart Priority Air</div>
+      </div>
+    </div>
+
+    <!-- Live Step Tracker -->
+    <div class="tracking-card">
+      <div style="display: flex; justify-content: space-between; align-items: flex-end; flex-wrap: wrap; gap: 15px;">
+        <div>
+          <span style="color: #00e5ff; font-weight: 700; font-size: 12px; letter-spacing: 2px;">LIVE TELEMETRY DISPATCH</span>
+          <h2 style="font-size: 26px; margin: 4px 0 0;">Shipment Tracking Timeline</h2>
+        </div>
+        <div style="font-size: 13px; color: #94a3b8;" id="dispTrackingNo">
+          Tracking Waybill: <b>BD-839210921</b>
+        </div>
+      </div>
+
+      <div class="tracking-steps">
+        <div class="tracking-progress-fill"></div>
+
+        <div class="step-node done">
+          <div class="node-circle">✓</div>
+          <div class="step-title">Order Placed</div>
+          <div class="step-desc" id="timelineStep1Time">Confirmed Just Now</div>
+        </div>
+
+        <div class="step-node active">
+          <div class="node-circle">⚙️</div>
+          <div class="step-title">Quality Inspection</div>
+          <div class="step-desc">BSM Hub Bangalore</div>
+        </div>
+
+        <div class="step-node">
+          <div class="node-circle">✈️</div>
+          <div class="step-title">Dispatched Air Cargo</div>
+          <div class="step-desc">BlueDart In Transit</div>
+        </div>
+
+        <div class="step-node">
+          <div class="node-circle">🏍️</div>
+          <div class="step-title">Doorstep Delivery</div>
+          <div class="step-desc">Rider Verification</div>
+        </div>
+      </div>
+
+      <!-- Live Dispatch Map Simulation -->
+      <div class="gps-map-card">
+        <div class="gps-icon">📍</div>
+        <div class="gps-info">
+          <h4>Live Route Simulation: Bangalore Hub ➔ Your Delivery Address</h4>
+          <p id="dispDeliveryAddressRoute">
+            Package will depart Central Aviation Logistics Center. SMS and WhatsApp alerts will be dispatched with your live delivery partner's contact.
+          </p>
+        </div>
+      </div>
+    </div>
+
+    <!-- Official Printable Tax Invoice -->
+    <div class="printable-invoice" id="printableInvoiceCard">
+      <!-- Invoice Header -->
+      <div class="invoice-header">
+        <div class="invoice-brand">
+          <h2>BIKE SPARES <span>MART</span></h2>
+          <p>India's Premium Motorcycle Spares & Racing Equipment Depot</p>
+          <p><b>GSTIN:</b> 29AABCU9603R1ZM | <b>FSSAI / CIN:</b> U34300KA2024PTC198421</p>
+          <p>Fulfillment Hub: Plot 12, Tech Park Ring Road, Electronic City, Bangalore - 560100</p>
+        </div>
+        <div class="invoice-meta">
+          <div class="invoice-badge-title">TAX INVOICE</div>
+          <div class="invoice-meta-text">
+            <div><b>Invoice No:</b> <span id="invInvoiceNo">INV-BSM-0000</span></div>
+            <div><b>Order ID:</b> <span id="invOrderId">BSM-000000</span></div>
+            <div><b>Date & Time:</b> <span id="invDateTime">2026-10-10</span></div>
+            <div><b>Payment Mode:</b> <span id="invPaymentMode">Cash on Delivery</span></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Customer & Shipping Details -->
+      <div class="invoice-party-grid">
+        <div class="party-col">
+          <h4>Billed & Shipped To</h4>
+          <p><b id="invCustName">Rider Name</b></p>
+          <p id="invCustAddress">123 Rider Street, Sector 4</p>
+          <p id="invCustCityPin">City, State - Pincode</p>
+          <p><b>Mobile:</b> <span id="invCustPhone">+91 9876543210</span></p>
+          <p><b>Email:</b> <span id="invCustEmail">rider@example.com</span></p>
+        </div>
+        <div class="party-col">
+          <h4>Dispatch & Logistics Details</h4>
+          <p><b>Carrier:</b> BlueDart Priority Air Logistics</p>
+          <p><b>AWB Waybill:</b> <span id="invAwb">BD-982189211</span></p>
+          <p><b>Packaging:</b> 4K Tamper-Proof Seal Box</p>
+          <p><b>Warranty:</b> 100% Genuine OEM Guarantee</p>
+          <p><b>Return Window:</b> 7-Day Hassle-Free Replacement</p>
+        </div>
+      </div>
+
+      <!-- Itemized Products Table -->
+      <table class="invoice-table">
+        <thead>
+          <tr>
+            <th>#</th>
+            <th>Item Description</th>
+            <th>Category</th>
+            <th>HSN</th>
+            <th>Qty</th>
+            <th>Unit Price</th>
+            <th>Amount (INR)</th>
+          </tr>
+        </thead>
+        <tbody id="invItemsTableBody">
+          <!-- Populated dynamically via JS -->
+        </tbody>
+      </table>
+
+      <!-- Financial Calculation Summary -->
+      <div class="invoice-financials">
+        <div class="financials-card">
+          <div class="fin-row">
+            <span>Subtotal (Gross):</span>
+            <span id="invSubtotal">₹0</span>
+          </div>
+          <div class="fin-row" id="invDiscountRow" style="display:none; color:#16a34a;">
+            <span>Coupon Discount:</span>
+            <span id="invDiscount">- ₹0</span>
+          </div>
+          <div class="fin-row">
+            <span>Express Delivery Fee:</span>
+            <span id="invShipping">FREE</span>
+          </div>
+          <div class="fin-row">
+            <span>GST Included (CGST 9% + SGST 9%):</span>
+            <span id="invGst">₹0</span>
+          </div>
+          <div class="fin-row bold-total">
+            <span>Total Payable:</span>
+            <span id="invGrandTotal">₹0</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Invoice Signoff Footer -->
+      <div class="invoice-footer">
+        <div>
+          <p><b>Terms & Conditions:</b> Goods once verified can be returned within 7 days in original seal.</p>
+          <p>This is a computer-generated official tax invoice and does not require a physical signature.</p>
+        </div>
+        <div style="text-align: right;">
+          <div style="font-weight: 700; color: #0f172a; margin-bottom: 4px;">BIKE SPARES MART PVT LTD</div>
+          <div style="color: #10b981; font-weight: 600;">✓ Digitally Certified & Cleared</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Action Buttons -->
+    <div class="action-controls-bar">
+      <button class="btn-action-primary" onclick="window.print()">
+        🖨️ Print / Save Official PDF Invoice
+      </button>
+      <a href="index.html" class="btn-action-secondary">
+        🏍️ Return to Spares Mart
+      </a>
+      <button class="btn-action-secondary" onclick="openChatWithAi()">
+        🤖 Inquire with Your Wise AI
+      </button>
+    </div>
+
+  </main>
+
+  <!-- Load dependencies for AI Chat and state -->
+  <script src="js/products.js"></script>
+  <script src="js/ai-chatbot.js"></script>
+  <script>
+    // Parse order ID from URL query param e.g. order-success.html?orderId=BSM-123456
+    function loadOrderDetails() {
+      const urlParams = new URLSearchParams(window.location.search);
+      const targetId = urlParams.get('orderId');
+      const allOrders = JSON.parse(localStorage.getItem('orders') || '[]');
+
+      let currentOrder = null;
+      if (targetId) {
+        currentOrder = allOrders.find(o => o.id === targetId);
+      }
+      if (!currentOrder && allOrders.length) {
+        currentOrder = allOrders[0];
+      }
+
+      if (!currentOrder) {
+        // Fallback demo order if visited directly
+        currentOrder = {
+          id: 'BSM-' + Math.floor(100000 + Math.random() * 900000),
+          trackingNo: 'BD-829104821',
+          date: new Date().toLocaleString('en-IN'),
+          estDelivery: 'Within 3 Business Days',
+          carrier: 'BlueDart Priority Air Express',
+          name: 'Vikram Rider',
+          phone: '9845123456',
+          email: 'rider@gmail.com',
+          address: 'Plot 88, 100ft Road, Koramangala',
+          city: 'Bangalore',
+          pin: '560034',
+          payment: 'Cash on Delivery',
+          subtotal: 3798,
+          shipping: 0,
+          discount: 0,
+          total: 3798,
+          items: [
+            { id: 1, name: "Brembo Ceramic Performance Front Brake Pads", cat: "Brakes", price: 1299, q: 1 },
+            { id: 5, name: "D.I.D 520 Professional O-Ring Gold Drive Chain", cat: "Drive & Chain", price: 2499, q: 1 }
+          ]
+        };
+      }
+
+      // Populate Hero & Tracker
+      document.getElementById('dispOrderId').textContent = `Order ID: ${currentOrder.id}`;
+      const payStatusEl = document.getElementById('dispPayStatus');
+      if (currentOrder.payment && currentOrder.payment.includes('UPI')) {
+        payStatusEl.textContent = `✓ ${currentOrder.payment}`;
+        payStatusEl.style.borderColor = '#10b981';
+        payStatusEl.style.color = '#10b981';
+        payStatusEl.style.background = 'rgba(16, 185, 129, 0.15)';
+      } else {
+        payStatusEl.textContent = `Payment: ${currentOrder.payment}`;
+      }
+      document.getElementById('dispEstDelivery').textContent = `Est. Delivery: ${currentOrder.estDelivery || '3 Days'}`;
+      document.getElementById('dispCarrier').textContent = `Carrier: ${currentOrder.carrier || 'BlueDart Air'}`;
+      document.getElementById('dispTrackingNo').innerHTML = `Tracking Waybill: <b>${currentOrder.trackingNo || 'BD-849201948'}</b>`;
+      document.getElementById('timelineStep1Time').textContent = `Confirmed ${currentOrder.date}`;
+      document.getElementById('dispDeliveryAddressRoute').innerHTML = `
+        Destination: <b>${currentOrder.address}, ${currentOrder.city} - ${currentOrder.pin}</b>.<br>
+        Consignee: <b>${currentOrder.name}</b> (${currentOrder.phone}). Package dispatched via Air Express.
+      `;
+
+      // Populate Printable Invoice
+      document.getElementById('invInvoiceNo').textContent = `INV-${currentOrder.id}`;
+      document.getElementById('invOrderId').textContent = currentOrder.id;
+      document.getElementById('invDateTime').textContent = currentOrder.date;
+      document.getElementById('invPaymentMode').textContent = currentOrder.payment;
+
+      document.getElementById('invCustName').textContent = currentOrder.name;
+      document.getElementById('invCustAddress').textContent = currentOrder.address;
+      document.getElementById('invCustCityPin').textContent = `${currentOrder.city} - ${currentOrder.pin}`;
+      document.getElementById('invCustPhone').textContent = currentOrder.phone;
+      document.getElementById('invCustEmail').textContent = currentOrder.email || 'N/A';
+      document.getElementById('invAwb').textContent = currentOrder.trackingNo || 'BD-849201948';
+
+      // Items table
+      const tbody = document.getElementById('invItemsTableBody');
+      tbody.innerHTML = (currentOrder.items || []).map((it, idx) => `
+        <tr>
+          <td>${idx + 1}</td>
+          <td><b>${it.name}</b></td>
+          <td>${it.cat || 'Bike Spare'}</td>
+          <td>8714.10</td>
+          <td>${it.q}</td>
+          <td>₹${Number(it.price).toLocaleString('en-IN')}</td>
+          <td><b>₹${(it.price * it.q).toLocaleString('en-IN')}</b></td>
+        </tr>
+      `).join('');
+
+      // Financials
+      const sub = currentOrder.subtotal || currentOrder.total;
+      document.getElementById('invSubtotal').textContent = `₹${Number(sub).toLocaleString('en-IN')}`;
+
+      if (currentOrder.discount && currentOrder.discount > 0) {
+        document.getElementById('invDiscountRow').style.display = 'flex';
+        document.getElementById('invDiscount').textContent = `- ₹${Number(currentOrder.discount).toLocaleString('en-IN')}`;
+      }
+
+      document.getElementById('invShipping').innerHTML = currentOrder.shipping === 0 
+        ? '<b style="color:#0284c7;">FREE Express</b>' 
+        : `₹${currentOrder.shipping}`;
+
+      const approxGst = Math.round((currentOrder.total * 18) / 118);
+      document.getElementById('invGst').textContent = `₹${approxGst.toLocaleString('en-IN')} (Inclusive)`;
+      document.getElementById('invGrandTotal').textContent = `₹${Number(currentOrder.total).toLocaleString('en-IN')}`;
+    }
+
+    function openChatWithAi() {
+      if (window.YourWiseAI) {
+        window.YourWiseAI.toggle(true);
+        window.YourWiseAI.sendQuick('Track my current order status');
+      }
+    }
+
+    document.addEventListener('DOMContentLoaded', loadOrderDetails);
+  </script>
+</body>
+</html>

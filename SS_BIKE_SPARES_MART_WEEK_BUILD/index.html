@@ -1,0 +1,733 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>BIKE SPARES MART | 4K Genuine Motorcycle Parts & Performance Depot</title>
+    <meta name="description"
+        content="Shop 25+ genuine motorcycle spare parts, brakes, chains, LED lights, tyres, and performance upgrades. 24/7 Your Wise AI Mechanic assistant and instant dispatch tracking.">
+
+    <!-- Modern 4K Typography -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800;900&family=Space+Grotesk:wght@500;600;700&display=swap"
+        rel="stylesheet">
+
+    <!-- 4K Custom Stylesheet -->
+    <link rel="stylesheet" href="css/styles.css">
+</head>
+
+<body>
+
+    <!-- Top Announcement Notification Bar -->
+    <div class="top-announcement-bar">
+        <div class="announcement-content">
+            <span>🚚 <b>FREE Express Delivery</b> on orders above ₹999</span>
+            <span class="dot-separator">•</span>
+            <span>🛡️ <b>100% Genuine OEM & Racing Spares Guarantee</b></span>
+            <span class="dot-separator">•</span>
+            <span>🤖 <b>Your Wise AI Mechanic</b> Live 24/7</span>
+            <span class="dot-separator">•</span>
+            <span>📞 Helpline: 1800-420-BIKE</span>
+        </div>
+    </div>
+
+    <!-- Dedicated Sign In / Authentication View (Can be accessed directly or toggled) -->
+    <section id="loginPage" class="login hide">
+        <div class="loginCard">
+            <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:18px;">
+                <button type="button" class="btn-outline-sm" onclick="home()">← Return to Spares Mart</button>
+                <span style="font-size:11px; color:var(--cyan); font-weight:800; letter-spacing:1px;">4K RIDER
+                    AUTH</span>
+            </div>
+            <div class="login-brand-header">
+                <div class="bike-logo-icon">🏍️</div>
+                <h1>BIKE SPARES <span>MART</span></h1>
+                <p>Motorcycle spare parts & performance upgrades at practical prices.</p>
+            </div>
+
+            <!-- Auth Tabs: Login vs Register -->
+            <div class="auth-toggle-tabs">
+                <button id="authTabLogin" class="auth-tab-btn active" onclick="switchAuthTab('login')">Sign In</button>
+                <button id="authTabRegister" class="auth-tab-btn" onclick="switchAuthTab('register')">Create
+                    Account</button>
+            </div>
+
+            <!-- Quick Demo Account Fillers -->
+            <div class="demo-pill-group">
+                <span>Quick Demo:</span>
+                <button type="button" class="demo-btn" onclick="fillDemo('rider')">⚡ Rider Demo (rider@gmail.com /
+                    1234)</button>
+                <button type="button" class="demo-btn" onclick="fillDemo('mechanic')">🔧 Mechanic Demo</button>
+            </div>
+
+            <!-- Login Form Container -->
+            <div id="loginFormContainer">
+                <form onsubmit="event.preventDefault(); login();">
+                    <label for="loginEmail">Rider Email Address</label>
+                    <input id="loginEmail" type="email" placeholder="rider@gmail.com" required value="rider@gmail.com">
+
+                    <label for="loginPassword">Password</label>
+                    <div class="pw">
+                        <input id="loginPassword" type="password" placeholder="••••" required value="1234">
+                        <button type="button" onclick="togglePassword('loginPassword')">Show</button>
+                    </div>
+
+                    <button type="submit" class="primary full glow-btn">
+                        🏍️ Sign In to Bike Spares Mart
+                    </button>
+                </form>
+            </div>
+
+            <!-- Register Form Container -->
+            <div id="registerFormContainer" class="hide">
+                <form onsubmit="event.preventDefault(); register();">
+                    <label for="regName">Rider Full Name *</label>
+                    <input id="regName" type="text" placeholder="e.g. Vikram Sharma" required>
+
+                    <label for="regEmail">Email Address *</label>
+                    <input id="regEmail" type="email" placeholder="rider@example.com" required>
+
+                    <label for="regBike">Primary Motorcycle Model</label>
+                    <select id="regBike">
+                        <option value="Yamaha MT-15 V2">Yamaha MT-15 / R15 V4</option>
+                        <option value="KTM Duke 390">KTM Duke 200/250/390</option>
+                        <option value="Royal Enfield Classic 350">Royal Enfield Classic / Hunter 350</option>
+                        <option value="Bajaj Pulsar NS200">Bajaj Pulsar NS200 / Dominar 400</option>
+                        <option value="TVS Apache RTR 200">TVS Apache RTR 160 / 200</option>
+                        <option value="Other Bike">Other Motorcycle</option>
+                    </select>
+
+                    <label for="regPhone">Mobile Number (10 digits)</label>
+                    <input id="regPhone" type="tel" maxlength="10" placeholder="9876543210">
+
+                    <label for="regPassword">Create Password *</label>
+                    <div class="pw">
+                        <input id="regPassword" type="password" placeholder="••••••••" required>
+                        <button type="button" onclick="togglePassword('regPassword')">Show</button>
+                    </div>
+
+                    <button type="submit" class="primary full glow-btn">
+                        🚀 Register & Claim 200 Mart Coins
+                    </button>
+                </form>
+            </div>
+
+            <!-- Guest Bypass Option -->
+            <div class="login-foot">
+                <button class="btn-text-link"
+                    onclick="document.getElementById('loginPage').classList.add('hide'); document.getElementById('app').classList.remove('hide'); home();">
+                    Continue as Guest Rider →
+                </button>
+            </div>
+        </div>
+    </section>
+
+    <!-- Main Storefront Application -->
+    <div id="app">
+
+        <!-- Sticky Main Navigation Header -->
+        <header id="mainHeader">
+            <div class="header-left">
+                <a href="javascript:void(0)" onclick="home()" class="brand-logo-link">
+                    <span class="logo-bike">🏍️</span>
+                    <div>
+                        <b class="brand-name">BIKE SPARES <span class="accent-orange">MART</span></b>
+                        <span class="brand-sub">4K PERFORMANCE DEPOT</span>
+                    </div>
+                </a>
+            </div>
+
+            <!-- Quick Search Bar in Header -->
+            <div class="header-search-box">
+                <input type="text" id="headerQuickSearch"
+                    placeholder="Search 25+ spares e.g. Brembo, Chain, LED, Motul..."
+                    oninput="document.getElementById('search').value = this.value; render(); productsView();">
+                <button type="button" aria-label="Search">🔍</button>
+            </div>
+
+            <!-- Navigation Links & Action Badges -->
+            <nav class="main-nav">
+                <button onclick="home()" class="nav-btn">Home</button>
+                <button onclick="productsView()" class="nav-btn">Shop 25+ Spares</button>
+                <button onclick="openDashboard('overview')" class="nav-btn">Dashboard</button>
+                <button onclick="ordersView()" class="nav-btn">My Orders</button>
+                <button onclick="openWishlist()" class="nav-btn-icon" title="Wishlist">
+                    ❤️ <span class="nav-label">Wishlist</span>
+                    <i id="wishlistCount" class="badge-count">0</i>
+                </button>
+                <button onclick="openCart()" class="nav-btn-icon" title="Cart">
+                    🛒 <span class="nav-label">Cart</span>
+                    <i id="cartCount" class="badge-count">0</i>
+                </button>
+                <button id="navAuthBtn" class="nav-auth-btn" onclick="loginView('login')">
+                    🔑 Sign In / Login
+                </button>
+            </nav>
+        </header>
+
+        <!-- 4K Cinematic Hero Section -->
+        <section id="hero" class="hero">
+            <div class="hero-content">
+                <div class="hero-tagline">
+                    <em>BIKE SPARES • 4K PERFORMANCE • 24H EXPRESS DISPATCH</em>
+                </div>
+                <h2>Keep your ride<br><span class="gradient-text">ready for the road & track.</span></h2>
+                <p>
+                    Discover 25+ precision-engineered motorcycle spares: ceramic disc pads, brass drive chains, Philips
+                    6000K LEDs, Motul 100% synthetic fluids, and chassis armor. Powered by <b>Your Wise AI</b> mechanic.
+                </p>
+
+                <div class="hero-btn-group">
+                    <button class="primary glow-btn" onclick="productsView()">
+                        ⚡ Shop 25+ Spare Parts
+                    </button>
+                    <button class="btn-outline-cyan" onclick="YourWiseAI.toggle(true)">
+                        🤖 Ask Your Wise AI Mechanic
+                    </button>
+                    <button class="btn-outline-dark" onclick="openDashboard('garage')">
+                        🏍️ Filter By My Bike
+                    </button>
+                </div>
+
+                <!-- Quick Category Shortcuts -->
+                <div class="quick-category-pills">
+                    <span class="qc-label">Quick Categories:</span>
+                    <button onclick="setCategoryFilter('Brakes')">🛑 Brakes</button>
+                    <button onclick="setCategoryFilter('Drive & Chain')">⛓️ Drive Chain</button>
+                    <button onclick="setCategoryFilter('Electrical')">💡 Electrical</button>
+                    <button onclick="setCategoryFilter('Engine & Service')">🛢️ Engine & Oil</button>
+                    <button onclick="setCategoryFilter('Suspension')">🏁 Suspension</button>
+                    <button onclick="setCategoryFilter('Tyres & Wheels')">🛞 Tyres</button>
+                    <button onclick="setCategoryFilter('Controls & Body')">🎮 Controls & Guards</button>
+                </div>
+            </div>
+        </section>
+
+        <!-- Key Metrics Stats Section -->
+        <section class="stats">
+            <div>
+                <b>30+</b>
+                <span>Genuine 4K Spare Parts</span>
+            </div>
+            <div>
+                <b>7</b>
+                <span>Specialized Categories</span>
+            </div>
+            <div>
+                <b>★ 4.9</b>
+                <span>1,500+ Rider Reviews</span>
+            </div>
+            <div>
+                <b>COD / UPI</b>
+                <span>Instant Checkout & Invoices</span>
+            </div>
+            <div>
+                <b>24/7 AI</b>
+                <span>Your Wise Assistant</span>
+            </div>
+        </section>
+
+        <!-- Catalog Section with Multi-Filter Toolbar -->
+        <section id="catalog" class="catalog-section">
+            <div class="heading">
+                <div>
+                    <em>OFFICIAL 4K REPLACEMENT CATALOG</em>
+                    <h2>Motorcycle Spare Parts & Upgrades</h2>
+                    <span id="catalogCount" class="catalog-count-pill">30 Genuine 4K Spares</span>
+                </div>
+
+                <!-- Filter Controls Toolbar -->
+                <div class="filters-toolbar">
+                    <!-- Text Search -->
+                    <div class="filter-input-wrap">
+                        <input id="search" oninput="render()" placeholder="Search parts, brands, specs...">
+                    </div>
+
+                    <!-- Category Selector -->
+                    <div class="filter-select-wrap">
+                        <select id="category" onchange="render()">
+                            <option value="all">All Categories (7)</option>
+                        </select>
+                    </div>
+
+                    <!-- Bike Model Selector -->
+                    <div class="filter-select-wrap">
+                        <select id="bikeFilter" onchange="render()">
+                            <option value="all">All Motorcycle Models</option>
+                        </select>
+                    </div>
+
+                    <!-- Sort Selector -->
+                    <div class="filter-select-wrap">
+                        <select id="sortFilter" onchange="render()">
+                            <option value="featured">Sort: Featured</option>
+                            <option value="rating">Sort: Highest Rating ★</option>
+                            <option value="reviews">Sort: Most Reviews</option>
+                            <option value="price-low">Sort: Price Low → High</option>
+                            <option value="price-high">Sort: Price High → Low</option>
+                        </select>
+                    </div>
+
+                    <!-- In-Stock Checkbox -->
+                    <label class="in-stock-label">
+                        <input type="checkbox" id="inStockOnly" onchange="render()">
+                        <span>In Stock Only</span>
+                    </label>
+                </div>
+            </div>
+
+            <!-- 4K Products Grid (30 Items dynamically rendered) -->
+            <div id="grid" class="grid"></div>
+        </section>
+
+        <!-- Comprehensive Rider Dashboard Section (Toggled via Nav) -->
+        <section id="dashboardSection" class="dashboard-page hide">
+            <div class="dashboard-container">
+                <!-- Dashboard Header -->
+                <div class="dashboard-header">
+                    <div class="dashboard-user-card">
+                        <div class="user-avatar-big" id="dashAvatarLetter">R</div>
+                        <div>
+                            <div class="dash-welcome">WELCOME TO YOUR RIDER HUB</div>
+                            <h2 id="dashRiderName">Vikram Rider</h2>
+                            <div class="dash-sub-line">
+                                <span id="dashRiderEmail">rider@gmail.com</span> •
+                                <span class="active-bike-badge">🏍️ Active: <b id="dashActiveBikeName">Yamaha MT-15
+                                        V2</b></span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="dash-header-actions">
+                        <button class="btn-outline-sm" onclick="closeDashboard()">← Back to Shop</button>
+                        <button class="btn-danger-sm" onclick="logout()">Logout</button>
+                    </div>
+                </div>
+
+                <!-- 4 Metric Cards -->
+                <div class="dashboard-stats-grid">
+                    <div class="dash-stat-card">
+                        <div class="stat-icon">📦</div>
+                        <div>
+                            <b id="dashStatOrders">0</b>
+                            <span>Orders Placed</span>
+                        </div>
+                    </div>
+                    <div class="dash-stat-card">
+                        <div class="stat-icon">❤️</div>
+                        <div>
+                            <b id="dashStatWishlist">0</b>
+                            <span>Saved Wishlist Parts</span>
+                        </div>
+                    </div>
+                    <div class="dash-stat-card">
+                        <div class="stat-icon">💰</div>
+                        <div>
+                            <b id="dashStatSpent">₹0</b>
+                            <span>Total Spares Invested</span>
+                        </div>
+                    </div>
+                    <div class="dash-stat-card">
+                        <div class="stat-icon">🪙</div>
+                        <div>
+                            <b id="dashStatCoins">500</b>
+                            <span>Mart Cash Points</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Dashboard Navigation Tabs -->
+                <div class="dashboard-tabs-bar">
+                    <button id="dashBtn_overview" class="dash-nav-btn active" onclick="switchDashboardTab('overview')">
+                        📊 Overview
+                    </button>
+                    <button id="dashBtn_orders" class="dash-nav-btn" onclick="switchDashboardTab('orders')">
+                        📦 My Orders & Invoices
+                    </button>
+                    <button id="dashBtn_garage" class="dash-nav-btn" onclick="switchDashboardTab('garage')">
+                        🏍️ My Digital Garage
+                    </button>
+                    <button id="dashBtn_profile" class="dash-nav-btn" onclick="switchDashboardTab('profile')">
+                        ⚙️ Profile & Address
+                    </button>
+                </div>
+
+                <!-- Tab 1: Overview -->
+                <div id="dashPane_overview" class="dash-tab-pane">
+                    <div class="dash-overview-grid">
+                        <div class="dash-box">
+                            <h3>🏍️ Active Bike Maintenance Status</h3>
+                            <p>Keep your performance machine serviced and track-ready:</p>
+                            <div class="bike-service-checklist">
+                                <div class="check-item done">✓ Brake Fluid (DOT 4) Flushed: Healthy</div>
+                                <div class="check-item done">✓ Drive Chain Tension & Lube: Checked</div>
+                                <div class="check-item warning">⚠️ Engine Oil Change Due in 800 km</div>
+                                <div class="check-item">○ Tyre Air Pressure Check Recommended</div>
+                            </div>
+                            <div style="margin-top: 20px;">
+                                <button class="primary"
+                                    onclick="closeDashboard(); setCategoryFilter('Engine & Service');">
+                                    Order Engine Oil & Filter →
+                                </button>
+                            </div>
+                        </div>
+
+                        <div class="dash-box">
+                            <h3>🤖 Your Wise AI Recommendations</h3>
+                            <p>Top compatible upgrades based on your ride history:</p>
+                            <div class="ai-recommend-list">
+                                <div class="ai-rec-row">
+                                    <div>
+                                        <b>Brembo Ceramic Performance Pads</b>
+                                        <small>Dramatically improves front stopping power</small>
+                                    </div>
+                                    <button class="btn-outline-sm"
+                                        onclick="closeDashboard(); openProductQuickView(1);">View</button>
+                                </div>
+                                <div class="ai-rec-row">
+                                    <div>
+                                        <b>Philips Ultinon 6000K Dual Beam LED</b>
+                                        <small>High illumination for night highway touring</small>
+                                    </div>
+                                    <button class="btn-outline-sm"
+                                        onclick="closeDashboard(); openProductQuickView(10);">View</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Tab 2: My Orders -->
+                <div id="dashPane_orders" class="dash-tab-pane hide">
+                    <h3>Your Placed Orders & 4K Tax Invoices</h3>
+                    <div id="dashOrdersList"></div>
+                </div>
+
+                <!-- Tab 3: My Garage -->
+                <div id="dashPane_garage" class="dash-tab-pane hide">
+                    <div class="garage-header-row">
+                        <div>
+                            <h3>My Digital Motorcycle Garage</h3>
+                            <p>Save your bikes to instantly filter 25+ spares engineered for your exact motorcycle.</p>
+                        </div>
+                    </div>
+
+                    <!-- Existing Bikes Grid -->
+                    <div id="garageVehiclesList"></div>
+
+                    <!-- Add New Bike Form -->
+                    <div class="add-bike-card">
+                        <h4>➕ Add Another Motorcycle to Garage</h4>
+                        <form onsubmit="addGarageBike(event)">
+                            <div class="form-row-3">
+                                <div>
+                                    <label>Make & Model *</label>
+                                    <input id="newBikeModel" placeholder="e.g. KTM Duke 390 / Royal Enfield Classic 350"
+                                        required>
+                                </div>
+                                <div>
+                                    <label>Model Year</label>
+                                    <input id="newBikeYear" placeholder="e.g. 2023">
+                                </div>
+                                <div>
+                                    <label>Registration Number</label>
+                                    <input id="newBikeReg" placeholder="e.g. KA-05-MM-1234">
+                                </div>
+                            </div>
+                            <button type="submit" class="primary" style="margin-top: 14px;">Add Bike to Garage</button>
+                        </form>
+                    </div>
+                </div>
+
+                <!-- Tab 4: Profile & Address -->
+                <div id="dashPane_profile" class="dash-tab-pane hide">
+                    <h3>Profile & Delivery Address Settings</h3>
+                    <form onsubmit="saveProfileChanges(event)" class="profile-form">
+                        <div class="form-row-2">
+                            <div>
+                                <label>Full Name</label>
+                                <input id="profName" required>
+                            </div>
+                            <div>
+                                <label>Email Address</label>
+                                <input id="profEmail" type="email" required>
+                            </div>
+                        </div>
+                        <div class="form-row-2">
+                            <div>
+                                <label>Mobile Number (10 Digits)</label>
+                                <input id="profPhone" maxlength="10" required>
+                            </div>
+                            <div>
+                                <label>City</label>
+                                <input id="profCity" required>
+                            </div>
+                        </div>
+                        <div>
+                            <label>Default Delivery Address</label>
+                            <textarea id="profAddress" rows="2" required></textarea>
+                        </div>
+                        <div class="form-row-2">
+                            <div>
+                                <label>Postal Pincode</label>
+                                <input id="profPin" maxlength="6" required>
+                            </div>
+                        </div>
+                        <button type="submit" class="primary" style="margin-top: 15px;">Save Profile Updates</button>
+                    </form>
+                </div>
+            </div>
+        </section>
+
+        <!-- Standalone My Orders View (Toggled via Orders nav button) -->
+        <section id="orders" class="hide page">
+            <div class="heading">
+                <div>
+                    <em>RIDER ACCOUNT</em>
+                    <h2>My Order History & Tracking</h2>
+                </div>
+                <button class="btn-outline-sm" onclick="productsView()">Browse More Spares</button>
+            </div>
+            <div id="orderList"></div>
+        </section>
+
+        <!-- Footer -->
+        <footer class="main-footer">
+            <div class="footer-grid">
+                <div class="footer-col brand-col">
+                    <div class="footer-logo">
+                        <span style="font-size: 28px;">🏍️</span>
+                        <b>BIKE SPARES <span>MART</span></b>
+                    </div>
+                    <p>India's definitive 4K destination for performance motorcycle replacement parts, OEM spares,
+                        electricals, and race equipment.</p>
+                    <div class="footer-socials">
+                        <span>🛡️ 100% Verified Parts</span>
+                        <span>⚡ 24h Express Dispatch</span>
+                        <span>🔒 Secure Encrypted Payments</span>
+                    </div>
+                </div>
+                <div class="footer-col">
+                    <h4>Spares Categories</h4>
+                    <ul>
+                        <li><a href="javascript:void(0)" onclick="setCategoryFilter('Brakes')">Ceramic Brake Pads &
+                                Discs</a></li>
+                        <li><a href="javascript:void(0)" onclick="setCategoryFilter('Drive & Chain')">O-Ring Chains &
+                                Sprockets</a></li>
+                        <li><a href="javascript:void(0)" onclick="setCategoryFilter('Electrical')">LED Projectors &
+                                Batteries</a></li>
+                        <li><a href="javascript:void(0)" onclick="setCategoryFilter('Engine & Service')">Motul Synthetic
+                                Oils & Filters</a></li>
+                        <li><a href="javascript:void(0)" onclick="setCategoryFilter('Suspension')">Monoshocks & Fork
+                                Preload</a></li>
+                    </ul>
+                </div>
+                <div class="footer-col">
+                    <h4>Rider Support</h4>
+                    <ul>
+                        <li><a href="javascript:void(0)" onclick="YourWiseAI.toggle(true)">Chat with Your Wise AI
+                                Mechanic</a></li>
+                        <li><a href="javascript:void(0)" onclick="ordersView()">Live Delivery Telemetry</a></li>
+                        <li><a href="javascript:void(0)" onclick="openDashboard('overview')">Rider Rewards & Coins</a>
+                        </li>
+                        <li><a href="javascript:void(0)" onclick="showAuthModal('login')">Account Sign In</a></li>
+                    </ul>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <div>© 2026 BIKE SPARES MART PVT LTD. All 4K Rights Reserved.</div>
+                <div>Built for Motorcyclists across India.</div>
+            </div>
+        </footer>
+
+    </div> <!-- End #app -->
+
+    <!-- ==================== MODALS ==================== -->
+
+    <!-- 1. Cart Modal -->
+    <div id="cartModal" class="modal hide">
+        <div class="card wide">
+            <div class="mh">
+                <h2>Your Shopping Cart</h2>
+                <button class="close-x" onclick="closeCart()">×</button>
+            </div>
+            <div id="cartItems"></div>
+            <div class="modal-footer-action">
+                <button class="primary full glow-btn" onclick="checkout()">
+                    ⚡ Proceed to Secure Checkout
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- 2. Wishlist Modal -->
+    <div id="wishlistModal" class="modal hide">
+        <div class="card wide">
+            <div class="mh">
+                <h2>Your Saved Wishlist (<span id="wishlistModalCount">0</span>)</h2>
+                <button class="close-x" onclick="closeWishlist()">×</button>
+            </div>
+            <div id="wishlistItems"></div>
+        </div>
+    </div>
+
+    <!-- 3. Checkout Modal -->
+    <div id="checkoutModal" class="modal hide">
+        <div class="card wide">
+            <div class="mh">
+                <h2>Fast Checkout & Delivery Information</h2>
+                <button class="close-x" onclick="closeM('checkoutModal')">×</button>
+            </div>
+
+            <!-- Order itemized preview -->
+            <div id="checkoutOrderSummary"></div>
+
+            <!-- Delivery form -->
+            <form onsubmit="event.preventDefault(); placeOrder();">
+                <h4 style="margin: 20px 0 10px 0; color: #00e5ff; font-size: 16px;">Shipping & Contact Details</h4>
+                <div class="form">
+                    <div>
+                        <label for="name">Full Name * <span
+                                style="color:var(--muted); font-size:11px; font-weight:normal;">(Letters only, numbers
+                                not allowed)</span></label>
+                        <input id="name" placeholder="Vikram Sharma" required oninput="sanitizeNameInput(this)">
+                        <small id="nameErrorHint"
+                            style="color:#ef4444; font-size:11px; display:none; margin-top:2px;">⚠️ Numbers are NOT
+                            allowed in Full Name!</small>
+                        <small style="color:var(--muted); font-size:11px;">Alphabets only (No numbers allowed)</small>
+                    </div>
+                    <div>
+                        <label for="phone">Mobile Phone (10 digits) * <span
+                                style="color:var(--muted); font-size:11px; font-weight:normal;">(Exactly 10
+                                digits)</span></label>
+                        <input id="phone" maxlength="10" placeholder="9845123456" required
+                            oninput="sanitizePhoneInput(this)">
+                        <small id="phoneErrorHint"
+                            style="color:#ef4444; font-size:11px; display:none; margin-top:2px;">⚠️ Must be exactly 10
+                            digits</small>
+                        <small style="color:var(--muted); font-size:11px;">10-digit mobile number</small>
+                    </div>
+                    <div>
+                        <label for="email">Email Address *</label>
+                        <input id="email" type="email" placeholder="rider@gmail.com" required>
+                    </div>
+                    <div>
+                        <label for="city">Delivery City *</label>
+                        <input id="city" placeholder="Bangalore" required>
+                    </div>
+                    <div class="two">
+                        <label for="address">Full Delivery Street Address *</label>
+                        <textarea id="address" rows="2" placeholder="House/Flat No, Landmark, Area" required></textarea>
+                    </div>
+                    <div>
+                        <label for="pin">Postal Pincode (6 digits) *</label>
+                        <input id="pin" maxlength="6" placeholder="560034" required
+                            oninput="this.value = this.value.replace(/\D/g, '').slice(0, 6)">
+                    </div>
+                    <div>
+                        <label for="payment">Payment Mode</label>
+                        <select id="payment" onchange="handlePaymentMethodChange()">
+                            <option value="Cash on Delivery (COD)">Cash on Delivery (COD)</option>
+                            <option value="UPI Instant (GPay / PhonePe / Paytm / QR Code)">UPI Instant (GPay / PhonePe /
+                                Paytm / QR Code)</option>
+                            <option value="Credit / Debit Card (Visa / RuPay / Mastercard)">Credit / Debit Card (Visa /
+                                RuPay / Mastercard)</option>
+                            <option value="Net Banking (All Major Indian Banks)">Net Banking (All Major Indian Banks)
+                            </option>
+                        </select>
+                    </div>
+                </div>
+
+                <!-- Live UPI QR Code Preview Box -->
+                <div id="checkoutUpiPreview" class="hide"></div>
+                <button type="submit" class="primary full glow-btn" style="margin-top: 24px;">
+                    🚀 Confirm Order & Generate 4K Tax Invoice
+                </button>
+            </form>
+        </div>
+    </div>
+
+    <!-- 4. Product Quick View & Customer Reviews Modal Container -->
+    <div id="productModal" class="modal hide"></div>
+
+    <!-- 5. In-Page Auth Modal for Seamless Login/Register -->
+    <div id="authModal" class="modal hide">
+        <div class="card">
+            <div class="mh">
+                <h2>Rider Account Access</h2>
+                <button class="close-x" onclick="closeAuthModal()">×</button>
+            </div>
+            <div class="auth-toggle-tabs" style="margin: 15px 0;">
+                <button class="auth-tab-btn active" onclick="switchModalAuth('login')">Sign In</button>
+                <button class="auth-tab-btn" onclick="switchModalAuth('register')">Register</button>
+            </div>
+
+            <div class="demo-pill-group">
+                <button type="button" class="demo-btn" onclick="fillDemo('rider'); login();">⚡ One-Click Rider
+                    Login</button>
+            </div>
+
+            <div id="modalAuthLogin">
+                <form onsubmit="event.preventDefault(); login();">
+                    <label>Email</label>
+                    <input id="modalLoginEmail" type="email" value="rider@gmail.com" required>
+                    <label>Password</label>
+                    <input id="modalLoginPass" type="password" value="1234" required>
+                    <button type="submit" class="primary full glow-btn" style="margin-top: 15px;">Sign In</button>
+                </form>
+            </div>
+
+            <div id="modalAuthRegister" class="hide">
+                <form onsubmit="event.preventDefault(); register();">
+                    <label>Full Name</label>
+                    <input id="modalRegName" placeholder="Rider Name" required>
+                    <label>Email</label>
+                    <input id="modalRegEmail" type="email" placeholder="rider@example.com" required>
+                    <label>Password</label>
+                    <input id="modalRegPass" type="password" placeholder="••••••••" required>
+                    <button type="submit" class="primary full glow-btn" style="margin-top: 15px;">Create
+                        Account</button>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- Toast Container -->
+    <div id="toast"></div>
+
+    <!-- JavaScript Scripts: Loaded in proper dependency order -->
+    <script src="js/products.js"></script>
+    <script src="js/wishlist.js"></script>
+    <script src="js/auth.js"></script>
+    <script src="js/cart.js"></script>
+    <script src="js/checkout.js"></script>
+    <script src="js/dashboard.js"></script>
+    <script src="js/ai-chatbot.js"></script>
+    <script src="js/app.js"></script>
+
+    <script>
+        // Helper to quickly filter category from hero chips
+        function setCategoryFilter(catName) {
+            const catSelect = document.getElementById('category');
+            if (catSelect) {
+                catSelect.value = catName;
+            }
+            render();
+            productsView();
+        }
+
+        function switchModalAuth(tab) {
+            if (tab === 'login') {
+                document.getElementById('modalAuthLogin').classList.remove('hide');
+                document.getElementById('modalAuthRegister').classList.add('hide');
+            } else {
+                document.getElementById('modalAuthLogin').classList.add('hide');
+                document.getElementById('modalAuthRegister').classList.remove('hide');
+            }
+        }
+    </script>
+</body>
+
+</html>
